@@ -1,0 +1,55 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+   <title></title>
+   <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+  </style>
+ </head>
+ <body>
+ <% if logged_in? %>
+  <% if session[:role] == 'Admin' || session[:role] == 'Realtor' && @realtor.company_id == @inquiry.house.company_id %>
+    <h1>New Reply</h1>
+
+    <%= render 'form', reply: @reply %>
+
+    <br>
+    <div class="container">
+      <div class="col-md-4 col-md-offset-5">
+        <%= link_to 'Back', replies_path , class: "btn btn-default" %>
+      </div>
+    </div>
+
+  <% else %>
+    <% if session[:role] == 'Realtor' %>
+      <script type="text/javascript">
+          window.location.href="/realtors/<%= current_user.id %>"
+      </script>
+    <% else %>
+      <% if session[:role] == 'House Hunter' %>
+        <script type="text/javascript">
+            window.location.href="/house_hunters/<%= current_user.id %>"
+        </script>
+<%end %>
+<% end %>
+    <a href="javascript:history.back()">Back</a>
+<% end %>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"
+  </script>
+<% end %>
+ </body>
+ </html>

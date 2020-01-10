@@ -1,0 +1,64 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+   <title></title>
+   <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+  </style>
+ </head>
+ <body>
+ <% if logged_in? %>
+  <% if session[:role] == 'Realtor' %>
+    <script type="text/javascript">
+    window.location.href="/realtors/<%= current_user.id %>"
+    </script>
+  <% else %>
+<p id="notice"><%= notice %></p>
+
+<h1>Replies</h1>
+
+<div class="jumbotron">
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Message</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @replies.each do |reply| %>
+      <tr>
+        <td scope="row"><%= reply.message %></td>
+        <td><%= link_to 'Show', reply %></td>
+        <% if session[:role] == 'Admin' %>
+        <td><%= link_to 'Edit', edit_reply_path(reply) %></td>
+        <td><%= link_to 'Destroy', reply, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<br>
+<% end %>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+
+ </body>
+ </html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign up</title>
+  <style type="text/css">
+    
+.body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: -40px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0;
+}
+.heading{
+  position: absolute;
+  margin-top: 15px;
+  margin-left: -30px;
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
+  </style>
+</head>
+<body>
+
+<div class="body"></div>
+  <% if logged_in? && session[:role] =='Admin' || !logged_in? %>
+  <h1 class="heading">New House Hunter</h1>
+
+  <%= render 'form', house_hunter: @house_hunter %>
+
+  <br>
+  <div class="container">
+    <div class="col-md-4 col-md-offset-5">
+      <a href="javascript:history.back()" class="btn btn-default">Back</a>
+    </div>
+  </div>
+
+
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+
+</body>
+</html>

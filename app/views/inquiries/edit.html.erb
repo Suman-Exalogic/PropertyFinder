@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+
+    }
+  </style>
+</head>
+<body>
+  <% if logged_in? %>
+  <% if session[:role] == 'Realtor' %>
+    <script type="text/javascript">
+        window.location.href="/realtors/<%= current_user.id %>"
+    </script>
+  <% else %>
+    <% if current_user.id == @inquiry.house_hunter_id %>
+<h1>Editing Inquiry</h1>
+
+<%= render 'form', inquiry: @inquiry %>
+
+<%= link_to 'Show', @inquiry %> |
+      <a href="javascript:history.back()">Back</a>
+    <% end %>
+    <% end %>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+
+</body>
+</html>

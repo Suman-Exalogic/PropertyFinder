@@ -1,0 +1,17 @@
+<% if logged_in?  %>
+<p id="notice"><%= notice %></p>
+<p>
+  <strong>House Hunter:</strong>
+  <%= @favourite.house_hunter.name %>
+</p>
+
+<p>
+  <strong>House:</strong>
+  <%= @favourite.house.name %>
+</p>
+  <a href="javascript:history.back()" class="btn btn-default">Back</a>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>

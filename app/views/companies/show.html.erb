@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+  </style>
+</head>
+<body>
+<table id="customers">
+<% if logged_in? %>
+  <% if @company.id == 1 %>
+    <script type="text/javascript">
+        window.location.href="/companies"
+    </script>
+    <% else %>
+<p id="notice"><%= notice %></p>
+
+<thead>
+  <tr>
+    <th><strong>Name</strong></th>
+    <th><strong>Website</strong></th>
+    <th><strong>Address</strong></th>
+    <th><strong>Employee Count</strong></th>
+    <th><strong>Year</strong></th>
+    <th><strong>Revenue</strong></th>
+    <th><strong>Synopsis</strong></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><%= @company.name %></td>
+    <td><%= @company.website %></td>
+    <td><%= @company.address %></td>
+    <td><%= @company.size %></td>
+    <td><%= @company.year %></td>
+    <td><%= @company.revenue %></td>
+    <td><%= @company.synopsis %></td>
+  </tr>
+</tbody>
+
+</table>
+<% if session[:role] == 'Admin' || session[:role] == 'Realtor' && current_user.company_id == @company.id  %>
+<%= link_to 'Edit', edit_company_path(@company) %>
+  <% end %>
+  <a class="btn btn-primary" href="javascript:history.back()">Back</a>
+    <% end %>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  // put your correct path in a string here
+  </script>
+<% end %>
+</body>
+</html>

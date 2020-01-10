@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+  body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: -40px;
+  width: auto;
+  height: auto;
+  background-image: url(https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*);
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0;
+  }
+
+.new{
+ background-color:gold; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 480px;
+
+}
+
+
+  </style>
+</head>
+<body>
+    <table id="customers">
+  <% if logged_in? %>
+<p id="notice"><%= notice %></p>
+  <% if session[:role] == 'Realtor' && current_user.company_id == 1  %>
+    <p> You can't view any houses. Register to or create a company first</p>
+  <% else %>
+<h1>Enquiries</h1>
+    <% @inquiries.each do |inquiry| %>
+  <% if session[:role] == 'Admin' || (session[:role] == 'House Hunter' && inquiry.house_hunter_id == current_user.id) || (session[:role] == 'Realtor' && inquiry.house.company_id == current_user.company_id) %>
+    
+        <thead>
+          <tr>
+       <th><strong>From </strong></th>
+       <th><strong>House </strong></th> 
+       <th><strong>Subject </strong></th>
+       <th> <strong>Enquiry </strong> </th>
+       <th></th>
+       <th></th>
+       <th></th>
+       <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= inquiry.house_hunter.name%></td>
+          <td> <%= inquiry.house.name %></td>
+          <td><%= inquiry.subject %></td>
+          <td><%= inquiry.message %></td>
+           <td><%= link_to 'Show', inquiry %></td>
+        <% if session[:role] == 'Realtor' %>
+       <td><%= link_to 'Edit', edit_inquiry_path(inquiry) %></td> 
+        <td><%= link_to 'Destroy', inquiry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        <% unless session[:role] == 'House Hunter' %>
+        <td><%= link_to 'Reply', new_reply_path(:inquiry_id => inquiry.id) %></td>
+        <% end %>
+        </tr>
+      </tbody>
+        <% unless session[:role] == 'Realtor' %>
+        <% if @replies.where(inquiry_id: inquiry.id).present? %>
+              <a href="#" id="toggler">View/Hide Replies</a>
+        <div id="toggled">
+        <% @replies.where(inquiry_id: inquiry.id).each do |reply| %>
+          <p><%= reply.realtor.name %>'s Reply:<%= reply.message %></p>
+          <% end %>
+        </div>
+          <% end %>
+            <%end %>
+
+       
+    <br>
+  <% end %>
+    <% end %>
+<br><br>
+<% unless session[:role] == 'Realtor' %>
+<div class="new"><%= link_to 'New Enquiry', new_inquiry_path %>
+  <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+<script>
+    $(document).ready(function(){
+        $("#toggler").click(function(){
+            $("#toggled").toggle();
+        });
+    });
+</script>
+</table>
+</body>
+</html>
+<br>
+<a class="btn btn-primary"href="javascript:history.back()">Back</a>
+
+  

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+    .house{
+  background-color:gold; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 470px;
+
+    }
+  </style>
+</head>
+<body>
+  <% if logged_in? %>
+<p id="notice"><%= notice %></p>
+  <h1>Houses</h1>
+  <div class="jumbotron">
+    <table class="table">
+      <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Location</th>
+      <th scope="col">Company</th>
+      <th scope="col">Area</th>
+      <th scope="col">Year</th>
+      <th scope="col">Style</th>
+      <th scope="col">Price</th>
+      <th scope="col">Floors</th>
+      <th scope="col">Basement</th>
+      <th scope="col">Owner</th>
+      <th scope="col">Realtor's Contact</th>
+      <th colspan="3"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% if session[:role] == 'Realtor' && current_user.company_id == 1  %>
+      <p> You can't view any houses. Register to or create a company first</p>
+    <% else %>
+    <% @houses.each do |house| %>
+    <% if session[:role] == 'Realtor' && current_user.company_id == house.company_id || session[:role] == 'House Hunter' || session[:role] == 'Admin' %>
+        <tr>
+        <td scope="row"><%= house.name %></td>
+        <td scope="row"><%= house.location %></td>
+        <td scope="row"><%= house.company.name %></td>
+        <td scope="row"><%= house.area %></td>
+        <td scope="row"><%= house.year %></td>
+        <td scope="row"><%= house.style %></td>
+        <td scope="row"><%= house.price %></td>
+        <td scope="row"><%= house.floors %></td>
+        <td scope="row"><%= house.basement %></td>
+        <td scope="row"><%= house.owner %></td>
+        <td scope="row"><%= house.realtor.phone %></td>
+        <td><%= link_to 'Show', house %></td>
+        <td>
+          <% unless session[:role] == 'House Hunter'%>  <%# Only Logged in Realtor and Admin has access %>
+            <td> <%= link_to 'Potential Buyers', "/favourites/potential_buyers/#{house.id}"  %></td>
+            <% if session[:role] == 'Admin' || house.realtor_id == current_user.id %>
+              <td>
+            <%= link_to 'Edit', edit_house_url(house) %>
+             <%= link_to 'Delete', house, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+              <% end %>
+          <%end %>
+          <% if session[:role] == 'House Hunter' || session[:role] == 'Admin' %>
+            <td><%= link_to 'Favourite', "/favourites/add/#{current_user.id}/#{house.id}"%></td>
+            <% end %>
+        </td>
+      </tr>
+    <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+  <br>
+    <% unless session[:role] == 'Realtor' %>
+    <div class="house"><%= link_to "Search Houses", new_search_path %>
+      <% end %> |
+  <% if session[:role] == 'Realtor' || session[:role] == 'Admin' %>
+    <%= link_to "New House", { :controller => "houses", :action => "new" } %>
+    <% end %>
+  <a href="javascript:history.back()">Back</a>
+    <% end %>
+  <% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  // put your correct path in a string here
+  </script>
+<% end %>
+</div>
+
+</body>
+</html>

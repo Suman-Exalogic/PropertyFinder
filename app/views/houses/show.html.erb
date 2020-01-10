@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+   <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+  </style>
+
+</head>
+<body>
+  <table id="customers">
+
+<% if logged_in? %>
+<p id="notice"><%= notice %></p>
+
+  <thead>
+    <tr>
+    <th style="width: 100px;"><strong>Name</strong></th>
+    <th style="width: 100px;"><strong>Location</strong></th>
+    <th style="width: 100px;"><strong>Company</strong></th>
+    <th style="width: 100px;"><strong>Area</strong></th>
+    <th style="width: 100px;"><strong>Year</strong></th>
+    <th style="width: 100px;"><strong>Style</strong></th>
+    <th style="width: 100px;"><strong>Price</strong></th>
+    <th style="width: 100px;"><strong>Floors</strong></th>
+    <th style="width: 100px;"><strong>Basement</strong></th>
+    <th style="width: 100px;"><strong>Owner</strong></th>
+    <th style="width: 100px;"><strong>Realtor's contact</strong></th>
+    <th style="width: 100px;"><strong>Image of the House</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @house.name %></td>
+      <td><%= @house.location %></td>
+      <td><%= @house.company.name %></td>
+      <td><%= @house.area %></td>
+      <td><%= @house.year %></td>
+      <td><%= @house.style %></td>
+      <td><%= @house.price %></td>
+      <td><%= @house.floors %></td>
+      <td><%= @house.basement %></td>
+      <td><%= @house.owner %></td>
+      <td><%= @house.realtor.phone %></td>
+      <td><%= image_tag @house.image_url.to_s %></td>
+    </tr>
+  </tbody>
+</table>
+
+  <% unless session[:role] == 'House Hunter'%>
+    <%= link_to 'Potential Buyers', "/favourites/potential_buyers/#{@house.id}"  %>
+    <% end %>
+</p>
+<% if session[:role] == 'Admin' || session[:role] == 'Realtor' && current_user.company_id == @house.company_id%>
+<%= link_to 'Edit', edit_house_path(@house) %>
+    <% end %>
+  <a href="javascript:history.back()" class="btn btn-primary">Back</a>
+  <% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+</body>
+</html>

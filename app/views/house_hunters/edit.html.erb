@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    body{
+  position: absolute;
+  top:  -20px;
+  left: -20px;
+  right: -40px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/brewster-mcleod-architects-1486154143.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+  background-size: cover;
+  /*-webkit-filter: blur(5px);*/
+  z-index: 0
+    }
+    .Show{
+      margin-left: 500px;
+      background-color:gold; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+
+    }
+  </style>
+</head>
+<body>
+  <% if logged_in? %>
+  <% if session[:role] == 'Realtor'%>
+    <script type="text/javascript">
+        window.location.href="/realtors/<%= current_user.id %>"
+    </script>
+  <% else %>
+<h1>Editing House Hunter</h1>
+
+<%= render 'form', house_hunter: @house_hunter %>
+<div class="Show"><%= link_to 'Show', @house_hunter %> |
+    <a href="javascript:history.back()">Back</a>
+  <% end %>
+</div>
+<% else %>
+  <script type="text/javascript">
+      window.location.href="/login"  //Redirect to login for unlogged in users
+  </script>
+<% end %>
+
+</body>
+</html>
