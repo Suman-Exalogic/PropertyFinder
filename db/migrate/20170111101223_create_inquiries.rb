@@ -4,7 +4,6 @@ class CreateInquiries < ActiveRecord::Migration[5.1]
       t.string :subject
       t.text :message
       t.integer :house_hunter_id
-      t.integer :house_id
 
       t.timestamps
     end
